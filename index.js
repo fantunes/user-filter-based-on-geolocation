@@ -39,19 +39,30 @@ const fetchData = async (url) => {
   return (await fetch(url)).json();
 }
 
-const populateUsersList = (users) => {
+const populateUsersList = (list) => {
   const listUI = document.querySelector('.js-users-list');
-  const listOfUsersUI = users.map(user => `<li>${user.first_name} ${user.last_name} - ${user.latitude} ${user.longitude}</li>`).join('');
+  const listOfUsersUI = (list.length > 0) ? list.map(user => `<li>${user.first_name} ${user.last_name} - ${user.latitude} ${user.longitude}</li>`).join('') : `<li>No users found</li>`;
 
   // ENHANCE: update to use insertAdjacentHTML
   listUI.innerHTML = listOfUsersUI;
 }
 
-const findUsersInLocation = async () => {
+const loadCity = () => {
+  const cityName = document.querySelector('.js-city-name');
+  const cityBtns = [...document.querySelectorAll('[data-city]')];
+
+  cityBtns.map(button => button.addEventListener('click', (e) => {
+    const targetCity = e.target.dataset.city;
+    findUsersInLocation(targetCity);
+    cityName.innerHTML = targetCity;
+  }));
+}
+
+const findUsersInLocation = async (city = 'London') => {
   const usersAPI = 'https://bpdts-test-app.herokuapp.com/users';
   // Not the best or most accurate API but it provides a free access
   // which is reliable enough for this application
-  const locationAPI = 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=London';
+  const locationAPI = `https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=${city}`;
 
   try {
     const users = await fetchData(usersAPI);
@@ -70,7 +81,9 @@ const findUsersInLocation = async () => {
       );
     });
 
-    // Users within
+    console.log(usersWithinRadius);
+
+    // Users within radius
     populateUsersList(usersWithinRadius);
   } catch(error) {
     // ENHANCE: improve error messages to user
@@ -78,4 +91,8 @@ const findUsersInLocation = async () => {
   }
 }
 
-findUsersInLocation();
+// Start app and UI
+(function() {
+  loadCity();
+  findUsersInLocation();
+})();
