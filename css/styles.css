@@ -13,6 +13,13 @@ body {
   color: #fff;
   border-radius: 3px;
   cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn--selected {
+  background: #fff;
+  color: #367bd0;
+  border: 1px solid #367bd0;
 }
 
 .range-display {

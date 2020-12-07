@@ -6,20 +6,24 @@
     <link rel="stylesheet" href="./css/styles.css">
   </head>
   <body>
-    <h1>Users within <span class="js-city-distance" data-selected-distance="50">50</span> from <span class="js-city-name" data-selected-city="London">London</span></h1>
+    <h1>Users within <span class="js-city-distance" data-selected-distance="50">50 miles</span> from <span class="js-city-name" data-selected-city="London">London</span></h1>
     <ul class="js-users-list">
       <li>No users in London</li>
     </ul>
     <div class="mb-20">
       <h2>Load users from other cities</h2>
-      <button class="btn" data-city="London">London</button>
+      <!--
+        New cities can be added here by just creating a new
+        button and data attribute
+      -->
+      <button class="btn btn--selected" data-city="London">London</button>
       <button class="btn" data-city="Leeds">Leeds</button>
-      <button class="btn" data-city="Newcastle upon Tyne">Newcastle</button>
+      <button class="btn" data-city="Paris">Paris</button>
       <button class="btn" data-city="San Francisco">San Francisco</button>
     </div>
     <div class="range-display">
       <label for="distance">Select distance:</label>
-      <input type="range" id="distance" step="1" min="0" max="500" value="50" class="js-range"> <span data-distance="50">50</span>
+      <input type="range" id="distance" step="1" min="0" max="500" value="50" class="js-range"> <span data-distance="50">50 miles</span>
     </div>
     <script src="./index.js"></script>
   </body>
