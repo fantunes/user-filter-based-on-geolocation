@@ -119,7 +119,7 @@ const distanceChangeUI = () => {
 
 // API call with default values
 const findUsersInLocation = async (city = 'London', distance = 50) => {
-  const usersAPI = 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=';
+  const usersAPI = 'https://bpdts-test-app.herokuapp.com/users';
   // Not the best nor the most reliable API but it provides a free access
   // which is good enough for this application
   const locationAPI = `https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=${city}`;
