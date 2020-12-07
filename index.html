@@ -3,19 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>Find users within radius</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="./css/styles.css">
   </head>
   <body>
-    <h1>Users within 50 miles from <span class="js-city-name">London</span></h1>
+    <h1>Users within <span class="js-city-distance" data-selected-distance="50">50</span> from <span class="js-city-name" data-selected-city="London">London</span></h1>
     <ul class="js-users-list">
       <li>No users in London</li>
     </ul>
-    <div>
+    <div class="mb-20">
       <h2>Load users from other cities</h2>
       <button class="btn" data-city="London">London</button>
       <button class="btn" data-city="Leeds">Leeds</button>
       <button class="btn" data-city="Newcastle upon Tyne">Newcastle</button>
       <button class="btn" data-city="San Francisco">San Francisco</button>
+    </div>
+    <div class="range-display">
+      <input type="range" step="1" min="0" max="500" value="50" class="js-range"> <span data-distance="50">50</span>
     </div>
     <script src="./index.js"></script>
   </body>

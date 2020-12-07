@@ -47,18 +47,49 @@ const populateUsersList = (list) => {
   listUI.innerHTML = listOfUsersUI;
 }
 
-const loadCity = () => {
+const updateCity = () => {
   const cityName = document.querySelector('.js-city-name');
   const cityBtns = [...document.querySelectorAll('[data-city]')];
 
   cityBtns.map(button => button.addEventListener('click', (e) => {
+    const currentDistance = document.querySelector('[data-selected-distance]');
     const targetCity = e.target.dataset.city;
-    findUsersInLocation(targetCity);
+
+    findUsersInLocation(targetCity, currentDistance.dataset.selectedDistance);
+    cityName.dataset.selectedCity = targetCity;
     cityName.innerHTML = targetCity;
   }));
 }
 
-const findUsersInLocation = async (city = 'London') => {
+const updateDistance = (event) => {
+  const currentDistance = document.querySelector('[data-selected-distance]');
+  const currentCity = document.querySelector('[data-selected-city]');
+  const distance = event.target.value;
+
+  currentDistance.dataset.selectedDistance = distance;
+  currentDistance.innerHTML = (distance > 1) ? distance + ' miles' : distance + ' mile';
+  console.log(currentCity.dataset.selectedCity, currentDistance.dataset.selectedDistance);
+  findUsersInLocation(currentCity.dataset.selectedCity, currentDistance.dataset.selectedDistance);
+};
+
+const displayDistance = (event) => {
+  const distanceUI = document.querySelector('[data-distance]');
+  const distance = event.target.value;
+
+  distanceUI.dataset.distance = distance;
+  distanceUI.innerHTML = (distance > 1) ? distance + ' miles' : distance + ' mile';
+};
+
+const distanceChangeUI = () => {
+  const cityDistance = document.querySelector('.js-range');
+
+  // Update for user to see range changing
+  cityDistance.addEventListener('input', displayDistance);
+  // Update after user finishes chosing distance
+  cityDistance.addEventListener('change', updateDistance);
+};
+
+const findUsersInLocation = async (city = 'London', distance = 50) => {
   const usersAPI = 'https://bpdts-test-app.herokuapp.com/users';
   // Not the best or most accurate API but it provides a free access
   // which is reliable enough for this application
@@ -77,11 +108,9 @@ const findUsersInLocation = async (city = 'London') => {
           startLon: centrePoint.coordinates[0].lon
         },
         {targetLat: user.latitude, targetLon: user.longitude},
-        50
+        distance
       );
     });
-
-    console.log(usersWithinRadius);
 
     // Users within radius
     populateUsersList(usersWithinRadius);
@@ -93,6 +122,7 @@ const findUsersInLocation = async (city = 'London') => {
 
 // Start app and UI
 (function() {
-  loadCity();
+  updateCity();
+  distanceChangeUI();
   findUsersInLocation();
 })();
