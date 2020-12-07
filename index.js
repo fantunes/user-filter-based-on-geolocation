@@ -119,7 +119,7 @@ const distanceChangeUI = () => {
 
 // API call with default values
 const findUsersInLocation = async (city = 'London', distance = 50) => {
-  const usersAPI = 'https://bpdts-test-app.herokuapp.com/users';
+  const usersAPI = 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=';
   // Not the best nor the most reliable API but it provides a free access
   // which is good enough for this application
   const locationAPI = `https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=${city}`;
@@ -146,7 +146,8 @@ const findUsersInLocation = async (city = 'London', distance = 50) => {
     // Users within radius
     populateUsersList(usersWithinRadius);
   } catch(error) {
-    console.error('Error ', error);
+    const listUI = document.querySelector('.js-users-list');
+    listUI.innerHTML = `<li>Something went wrong. Here's why: <strong>${error}</strong></li>`;
   }
 }
 
