@@ -48,18 +48,23 @@ const populateUsersList = (users) => {
 }
 
 const findUsersInLocation = async () => {
-  const usersDataURL = 'https://bpdts-test-app.herokuapp.com/users';
+  const usersAPI = 'https://bpdts-test-app.herokuapp.com/users';
+  // Not the best or most accurate API but it provides a free access
+  // which is reliable enough for this application
+  const locationAPI = 'https://en.wikipedia.org/w/api.php?action=query&prop=coordinates&format=json&titles=London';
+
   try {
-    const users = await fetchData(usersDataURL);
-    // London - ENHANCE: able to use other cities
-    const centrePoint = {
-      lat: 51.50722222,
-      lon: -0.1275
-    }
+    const users = await fetchData(usersAPI);
+    const city = await fetchData(locationAPI);
+    const centrePoint = Object.values(city.query.pages)[0];
+
     // Filter users using function
     const usersWithinRadius = users.filter(user => {
       return findDataWithinRadius(
-        {startLat: centrePoint.lat, startLon: centrePoint.lon},
+        {
+          startLat: centrePoint.coordinates[0].lat,
+          startLon: centrePoint.coordinates[0].lon
+        },
         {targetLat: user.latitude, targetLon: user.longitude},
         50
       );
