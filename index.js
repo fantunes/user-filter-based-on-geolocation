@@ -35,10 +35,8 @@ const findDataWithinRadius = (
   return (R * cos) <= maxDistance; // Earth radius * angle in the plane
 };
 
-const loadUsers = async () => {
-  // ENHANCE: able to use with other APIs
-  // https://bpdts-test-app.herokuapp.com/users
-  return (await fetch('https://bpdts-test-app.herokuapp.com/users')).json();
+const fetchData = async (url) => {
+  return (await fetch(url)).json();
 }
 
 const populateUsersList = (users) => {
@@ -50,8 +48,9 @@ const populateUsersList = (users) => {
 }
 
 const findUsersInLocation = async () => {
+  const usersDataURL = 'https://bpdts-test-app.herokuapp.com/users';
   try {
-    const users = await loadUsers();
+    const users = await fetchData(usersDataURL);
     // London - ENHANCE: able to use other cities
     const centrePoint = {
       lat: 51.50722222,
